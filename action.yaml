@@ -1,0 +1,48 @@
+name: Localstack Action
+description: Setup Localstack for use as testing target in GitHub.
+inputs:
+  aws_access_key_id:
+    description: AWS Access Key ID. By default we use the key ID allowed by git-secrets. See <https://github.com/awslabs/git-secrets>
+    default: AKIAIOSFODNN7EXAMPLE
+  aws_secret_access_key:
+    description: AWS Secret Access Key. By default we use the secret key allowed by git-secrets. See <https://github.com/awslabs/git-secrets>
+    default: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  cleanup:
+    description: If true then skip the normal setup process and instead attempt to gather logs from the existing localstack service.
+    default: false
+  host:
+    description: Default endpoint hostname. May need to be modified when containerizing a GitHub Job.  See <https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontainer>
+    default: localstack
+  port:
+    default: 4566
+  region:
+    description: Default AWS region
+    default: us-east-1
+  services:
+    description: List of AWS services to enable in localstack.  See <https://github.com/localstack/localstack>
+    default: ec2 iam sts cloudwatch cloudwatchevents
+  timeout:
+    description: Set timeout when waiting for localstack to start
+    default: 20
+  debug:
+    default: false
+
+outputs:
+  endpoint_url:
+    description: AWS Endpoint URL for use with AWS-CLI/Salt/Idem/Terraform
+  vpc_id:
+    description: Default VPC ID
+  public_subnets:
+    description: Default Public Subnet IDs
+  private_subnets:
+    description: Default Private Subnet IDs
+  security_group_ids:
+    description: Default Security Group IDs
+  ecs_cluster_name:
+    description: Reports the ECS cluster name when the ECS service is enabled.
+  ecs_cluster_arn:
+    description: Reports the ECS cluster ARN when the ECS service is enabled.
+
+runs:
+  using: docker
+  image: Dockerfile
